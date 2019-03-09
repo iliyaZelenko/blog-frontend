@@ -1,0 +1,52 @@
+// Import Vuetify styling
+//@require '~vuetify/src/stylus/main.styl'
+
+@import 'transitions'
+
+//@media (min-resolution: 222dppx) {
+//  .image {
+//    background-color: red;
+//  }
+//}
+
+.v-alert
+  border: 3px solid !important;
+  border-all(5px)
+
+.app-border-all-round
+  border-all(25px)
+
+.app-border-all-round-mini
+  border-all(10px)
+
+.bottom-gradient
+  background-image: linear-gradient(to top, rgba(0, 0, 0, 0.4) 0%, transparent 72px);
+
+/*
+marginer(1, 5, 4)
+paddinger(1, 5, 4)
+
+marginer(min, max, coef)
+  .mt-{min}
+    margin-top (min * coef px)
+  .mb-{min}
+    margin-bottom (min * coef px)
+  .ml-{min}
+    margin-left (min * coef px)
+  .mr-{min}
+    margin-right (min * coef px)
+  if min <= max
+    marginer(min + 1, max, coef)
+
+paddinger(min, max, coef)
+  .pt-{min}
+    padding-top (min * coef px)
+  .pb-{min}
+    padding-bottom (min * coef px)
+  .pl-{min}
+    padding-left (min * coef px)
+  .pr-{min}
+    padding-right (min * coef px)
+  if min <= max
+    paddinger(min + 1, max, coef)
+*/

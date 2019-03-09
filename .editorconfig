@@ -1,0 +1,30 @@
+# editorconfig.org
+
+# top-most EditorConfig file
+root = true
+
+# for all files by default
+[*]
+charset = utf-8
+# обрезает пробелы
+trim_trailing_whitespace = true
+# ставит переносы
+insert_final_newline = true
+# отступ
+indent_size = 2
+# https://stackoverflow.com/a/1552775/5286034
+end_of_line = lf
+# tab or space
+indent_style = space
+
+# frontend
+[*.{js,ts,vue,jsx,tsx}]
+indent_size = 2
+
+# backend
+[*.{php,yml}]
+indent_size = 4
+
+# other
+[*.md]
+trim_trailing_whitespace = false
