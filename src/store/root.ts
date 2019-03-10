@@ -30,7 +30,8 @@ export interface Action<S, R> extends ActionTree<S, R> {
 
 export const actions: Action<State, RootState> = {
   // context, serverContext
-  async nuxtServerInit () {
+  async nuxtServerInit ({ dispatch }, ctx) {
+    await dispatch(`${UIModule.NAME}/${UIModule.actionsTypes.INIT}`, ctx)
     // await getBackandRoutes(context, serverContext)
   }
 }

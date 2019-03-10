@@ -5,7 +5,7 @@ import PaginatorInfoFragment from '~/apollo/fragments/paginator/PaginatorInfoFra
 
 // , $repliesPreviewCount: Int!
 export const GET_POST_QUERY = ({ repliesPreviewCount }) => {
-  const repliesComments= repliesPreviewCount ? `
+  const repliesComments = repliesPreviewCount ? `
     repliesComments (count: ${repliesPreviewCount}) {
       data {
         ${useFragment(CommentFragment)}

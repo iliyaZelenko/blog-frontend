@@ -1,15 +1,15 @@
 import { Validator } from 'vee-validate'
 // import { vp } from '~/tools/helpers'
 
-// export const nicknameMaxSymbols = 32
+export const nicknameMaxSymbols = 32
 
 // Прежде чем ставить required| в правила какому-то полю,
 // подумайте будет ли использоваться похожее правило но без required|
-export const rules: object = {
+export const rules = {
   name: 'required|alpha_spaces|max:30',
   // firstName: 'alpha|min:3|max:10',
   // lastName: 'alpha|min:3|max:15',
-  // nickname: { required: true, regex: '^[а-яА-Яa-zA-ZЁё][а-яА-Яa-zA-Z0-9Ёё]*?([-_.][а-яА-Яa-zA-Z0-9Ёё]+){0,3}$', min: 3, max: nicknameMaxSymbols },
+  nickname: { required: true, regex: '^[а-яА-Яa-zA-ZЁё][а-яА-Яa-zA-Z0-9Ёё]*?([-_.][а-яА-Яa-zA-Z0-9Ёё]+){0,3}$', min: 3, max: nicknameMaxSymbols },
   // nicknameOrEmail: 'required',
   email: 'email',
   // emailLabel: 'min:3|max:20', // alpha_spaces
@@ -28,27 +28,25 @@ export const rules: object = {
 export const validator: Validator = new Validator(rules, {})
 
 // serverValidatorShowErrors
-export const showServerError = ({ data }) => {
+export function showServerError ({ data }) {
   const { errors } = data
   let message = ''
 
   if (errors) {
-    for (let field in errors) {
+    for (const field in errors) {
       if (errors.hasOwnProperty(field)) {
-        for (let error of errors[field]) {
+        for (const error of errors[field]) {
           message += `${error}<br>`
         }
       }
     }
-  } else {
+  } else if (data.message) {
     message = data.message
+  } else {
+    message = data
   }
 
-  // if (process.browser) {
   global._$app.$notify.error(message)
-  // } else {
-  //   console.error(message)
-  // }
 }
 
 export function validatorSwitchLocale (locale) {

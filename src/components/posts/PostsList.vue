@@ -34,7 +34,9 @@
           :key="post.id"
           xs12
           sm6
-          lg3
+          md6
+          lg4
+          xl3
         >
           <post
             :post="post"

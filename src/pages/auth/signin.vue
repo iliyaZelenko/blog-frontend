@@ -88,7 +88,7 @@
             <v-icon class="mr-1">
               help
             </v-icon>
-            <router-link :to="{ name: 'auth-forgot-password' }">
+            <router-link :to="pathGenerator.generate({ name: 'auth-forgot-password' })">
               Forgot password?
             </router-link>
 
@@ -97,7 +97,7 @@
             <v-icon class="mr-1">
               person_add
             </v-icon>
-            <router-link :to="{ name: 'auth-signup' }">
+            <router-link :to="pathGenerator.generate({ name: 'auth-signup' })">
               Sign up
             </router-link>
           </div>
@@ -107,42 +107,53 @@
   </div>
 </template>
 
-<script>
-import { mapActions } from 'vuex'
+<script lang="ts">
+import Vue from 'vue'
+import Component from '~/plugins/nuxt-class-component'
+import { Inject } from 'vue-inversify-decorator'
+import { TYPES } from '~/configs/dependencyInjection/types'
+import { PathGeneratorInterface } from '~/configs/dependencyInjection/interfaces'
+import {
+  namespace
+} from 'nuxt-class-component'
 
-export default {
-  name: 'Signin',
-  middleware: 'guest',
-  meta: {
-    guest: true
-  },
-  data: () => ({
-    form: {
-      email: 'test@test.com',
-      password: 'password'
-    },
-    loading: false,
-    showPassword: true
-  }),
-  methods: {
-    async submit () {
-      if (await this.$formValidator.validate(this.form)) {
-        this.loading = true
-        try {
-          await this.signin(this.form)
-        } finally {
-          this.loading = false
-        }
-      }
-    },
-    ...mapActions('auth', ['signin'])
-  },
+const authModule = namespace('auth')
+
+@Component({
   head () {
     return {
       title: 'Страница входа',
       meta: [
         { content: 'Это страница входа', name: 'description', hid: 'description' }
       ]
+    }
+  },
+  middleware: 'guest',
+  meta: {
+    guest: true
+  }
+})
+export default class Signin extends Vue {
+  // @ts-ignore
+  @Inject(TYPES.PathGeneratorInterface) private pathGenerator!: PathGeneratorInterface
+
+  @authModule.Action signin
+
+  form = {
+    email: 'test@test.com',
+    password: 'password'
+  }
+  loading: boolean = false
+  showPassword: boolean = true
+
+  async submit () {
+    if (await this.$formValidator.validate(this.form)) {
+      this.loading = true
+      try {
+        await this.signin(this.form)
+      } finally {
+        this.loading = false
+      }
     }
   }
 }

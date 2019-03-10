@@ -21,17 +21,23 @@
 
     <v-toolbar-items class="hidden-sm-and-down">
       <v-btn
-        :to="localePath({ name: 'index' })"
+        :to="pathGenerator.generate({ name: 'index' })"
         exact
         flat
       >
+        <v-icon left>
+          home
+        </v-icon>
         {{ $t('app_toolbar_navigation_home') }}
       </v-btn>
 
       <v-btn
-        :to="localePath({ name: 'categories' })"
+        :to="pathGenerator.generate({ name: 'categories' })"
         flat
       >
+        <v-icon left>
+          view_list
+        </v-icon>
         Категории
       </v-btn>
 
@@ -44,7 +50,7 @@
       </v-btn>-->
 
       <v-btn
-        :to="localePath({ name: 'debug' })"
+        :to="pathGenerator.generate({ name: 'debug' })"
         flat
       >
         <v-icon left>
@@ -142,7 +148,7 @@
 
               <span class="ml-1">
                 или
-                <nuxt-link :to="localePath({ name: 'auth-signup' })">
+                <nuxt-link :to="pathGenerator.generate({ name: 'auth-signup' })">
                   зарегестрироваться
                 </nuxt-link>
               </span>
@@ -187,6 +193,9 @@ import {
   // Mutation,
   namespace
 } from 'nuxt-class-component'
+import { Inject } from 'vue-inversify-decorator'
+import { TYPES } from '~/configs/dependencyInjection/types'
+import { PathGeneratorInterface } from '~/configs/dependencyInjection/interfaces'
 
 const authModule = namespace('auth')
 const authEmailVerificationModule = namespace('auth/emailVerification')
@@ -207,6 +216,13 @@ const authEmailVerificationModule = namespace('auth/emailVerification')
   // }
 })
 export default class TheToolbar extends Vue {
+  // @ts-ignore
+  @Inject(TYPES.PathGeneratorInterface) private pathGenerator!: PathGeneratorInterface
+
+  @authModule.Action signin
+  @authModule.Action logout
+  @authEmailVerificationModule.Action resend
+
   // data: () => ({
   form = {
     email: 'test@test.com',
@@ -215,10 +231,6 @@ export default class TheToolbar extends Vue {
   loading = false
   loadingLogout = false
   // })
-
-  @authModule.Action signin
-  @authModule.Action logout
-  @authEmailVerificationModule.Action resend
 
   async submit () {
     await this.$actionWithLoading(this.signin, 'loading', this.form)

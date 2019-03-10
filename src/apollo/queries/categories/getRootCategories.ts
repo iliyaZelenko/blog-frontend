@@ -9,6 +9,8 @@ export const GET_ROOT_CATEGORIES_QUERY = gql`
       path
       postsCount
       allPostsCount
+      childrenCount
+      allChildrenCount
     }
   }
 `

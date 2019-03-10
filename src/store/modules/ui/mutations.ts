@@ -1,11 +1,16 @@
 import { MutationTree } from 'vuex'
-import { State } from './types'
-import { SET_DARK } from './mutationsTypes'
+import { StateInterface } from './types'
 import { localStorageKeys } from '~/store/modules/ui/index'
+import * as mutationsTypesLocal from '~/store/modules/ui/actionsTypes'
 
-export const mutations: MutationTree<State> = {
-  [SET_DARK] (state: State, payload: boolean) {
+const {
+  SET_DARK
+} = mutationsTypesLocal
+
+export const mutations: MutationTree<StateInterface> = {
+  [SET_DARK] (state: StateInterface, payload: boolean) {
     state.isDark = payload
     global._$app.$cookies.set(localStorageKeys.isDark, payload.toString())
   }
 }
+export const mutationsTypes = mutationsTypesLocal

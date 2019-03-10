@@ -4,7 +4,9 @@
   >
     <the-toolbar @navigation-drawer="onNavigationDrawerChange" />
     <the-navigation-drawer v-model="navigationDrawer" />
-    <v-content>
+    <v-content
+      :style="contentStyle"
+    >
       <!-- fluid -->
       <v-container style="height: 100%; width: 100%;">
         <v-layout
@@ -61,6 +63,10 @@ import {
 import * as UIModule from '~/store/modules/ui'
 
 const UI = namespace(UIModule.NAME)
+const backgroundsByRoute = {
+  'auth-signin': 'http://kimcochrane.ca/wp-content/uploads/2018/03/001anaturewater2.jpg',
+  'auth-signup': 'http://s1.1zoom.me/b5051/880/Switzerland_Winter_Lake_Kander_Valley_Fir_Snow_517722_1920x1080.jpg'
+}
 
 @Component({
   name: 'MainLayout',
@@ -83,6 +89,15 @@ export default class MainLayout extends Vue {
   //     this.$notify.info('Bye', 'I\'m good!')
   //   }
   // }
+
+  get contentStyle () {
+    // @ts-ignore
+    const background = backgroundsByRoute[this.$route.name.split('__')[0]] // backgroundsByRoute[this.$route.name]
+
+    return {
+      background: background ? `url(${background})` : 'none'
+    }
+  }
 
   mounted () {
     // browser-side only class

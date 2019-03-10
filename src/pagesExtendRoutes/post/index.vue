@@ -5,7 +5,6 @@
     </h1>
 
     <v-layout
-      class="mb-4"
       align-center
       wrap
     >
@@ -27,11 +26,15 @@
         </nuxt-link>
       </div>
 
+      <v-spacer />
+
       <rating
         class="mx-4"
         :info="ratingInfo"
       />
+    </v-layout>
 
+    <div>
       <v-icon>
         label
       </v-icon>
@@ -40,10 +43,13 @@
         Tags:
       </span>
 
-      <tags :post="post" />
-    </v-layout>
+      <tags
+        style="display: inline-block;"
+        :post="post"
+      />
+    </div>
 
-    <p class="body-1">
+    <p class="body-1 mt-4">
       {{ post.content }}
     </p>
 

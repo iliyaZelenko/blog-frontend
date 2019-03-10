@@ -5,9 +5,9 @@
   >
     <v-img
       :src="imgSrc"
+      :lazy-src="guestAvatar"
       aspect-ratio="1"
-      lazy-src="https://practice.privatbank.ua/Content/images/no-avatar.png"
-      alt=""
+      alt="Аватар"
     >
       <v-layout
         slot="placeholder"
@@ -41,6 +41,8 @@ export default class UserAvatar extends Vue {
   @Prop(Object) user!: UserInterface
   @Prop({ default: AVATAR_SM }) sizeType!: AvatarSizeTypes
 
+  guestAvatar = 'https://practice.privatbank.ua/Content/images/no-avatar.png'
+
   get avatarOwner () {
     return this.user || this.$auth.user
   }
@@ -59,7 +61,7 @@ export default class UserAvatar extends Vue {
 
   get imgSrc () {
     // 'http://sharethingz.com/wp-content/uploads/2014/08/avatar-512x350.png?x96597'
-    return this.avatarOwner.avatar[this.sizeType]
+    return this.avatarOwner.avatar ? this.avatarOwner.avatar[this.sizeType] : this.guestAvatar
   }
 }
 </script>

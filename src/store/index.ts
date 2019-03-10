@@ -19,7 +19,7 @@ export interface ModulesStates {
   // до этого тут было BackendRoutes
   [BackendRoutesModule.NAME]: BackendRoutesModule.State
   [AuthModule.NAME]: AuthModule.State
-  [UIModule.NAME]: UIModule.State
+  [UIModule.NAME]: UIModule.StateInterface
 }
 
 export type RootState = root.State & ModulesStates
@@ -33,7 +33,7 @@ const createStore = () => {
     modules: {
       [BackendRoutesModule.NAME]: BackendRoutesModule,
       [AuthModule.NAME]: AuthModule,
-      [UIModule.NAME]: UIModule.default
+      [UIModule.NAME]: UIModule
     }
   })
 }

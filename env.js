@@ -27,11 +27,11 @@ export const NUXT_PORT = process.env.PORT || '3000'
 /* URL */
 export const BASE_URL = process.env.BASE_URL || (NUXT_HOST + ':' + NUXT_PORT)
 export const BASE_API_URL = process.env.BASE_API_URL || 'http://localhost:8000' // 'https://ilya-blog-backend.herokuapp.com' // process.env.BASE_API_URL || 'http://localhost:8000'
-export const FULL_API_URL = BASE_API_URL + '/api/' // + '/api/'
-export const FULL_API_GRAPHQL_URL = 'https://ilya-blog-backend.herokuapp.com/graphql' || (BASE_API_URL + '/graphql/') // + '/api/'
+export const FULL_API_URL = BASE_API_URL + '/api/'
+export const FULL_API_GRAPHQL_URL = BASE_API_URL + '/graphql/' // process.env.FULL_API_GRAPHQL_URL || (...
 
 console.log('BASE_API_URL', BASE_API_URL)
-console.log('FULL_API_GRAPHQL_URL', process.env.FULL_API_GRAPHQL_URL)
+console.log('FULL_API_GRAPHQL_URL', FULL_API_GRAPHQL_URL, process.env.FULL_API_GRAPHQL_URL)
 
 /* Locales */
 export const DEFAULT_LOCALE = 'ru'

@@ -89,21 +89,28 @@ export const actions: Actions<State, RootState> = {
     commit(USER, user)
   },
   async signin ({ dispatch }, form) {
-    const loggedInData = await global._$app.$post('auth/signin', form)
-    const loggedInResult = await dispatch('loggedIn', loggedInData)
+    try {
+      const loggedInData = await global._$app.$post('auth/signin', form)
+      const loggedInResult = await dispatch('loggedIn', loggedInData)
 
-    await Observable.emit<SignInEvent>(
-      SignInEvent.NAME,
-      new SignInEvent(loggedInResult)
-    )
+      await Observable.emit<SignInEvent>(
+        SignInEvent.NAME,
+        new SignInEvent(loggedInResult)
+      )
+    } catch (e) {
+      // Игнор ошибки. Axios interceptors сделают уведомление об ошибке.
+    }
   },
   async signup ({ dispatch }, form) {
-    const loggedInData = await global._$app.$post('auth/signup', form)
-    loggedInData.showMsg = false
+    try {
+      const loggedInData = await global._$app.$post('auth/signup', form)
+      loggedInData.showMsg = false
+      await dispatch('loggedIn', loggedInData)
 
-    await dispatch('loggedIn', loggedInData)
-
-    global._$app.$notify.success('Registered successfully!')
+      global._$app.$notify.success('Registered successfully!')
+    } catch (e) {
+      // Игнор ошибки. Axios interceptors сделают уведомление об ошибке.
+    }
   },
   // user,
   async loggedIn (context, { tokenInfo, showMsg = true }) {

@@ -120,6 +120,7 @@ export default class Profile extends Vue {
       owner = await UserRepo.getUserProfile(user)
 
       if (!owner) {
+        // TODO переделать на $notify и редирект (возможно и нет)
         return error({
           statusCode: 404,
           message: 'пользователь не найден'

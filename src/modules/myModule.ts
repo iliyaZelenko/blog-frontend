@@ -25,7 +25,23 @@
 // Compile class into a plain function
 // export default MyModule.export()
 
-export default function SimpleModule () {
-  // console.log('Nuxt', this.nuxt)
-  // Write your code here
+export default function () {
+  // console.log('000')
+  // this.nuxt.hook('ready', async nuxt => {
+  //   console.log('0000')
+  //
+  //   if (process.server) {
+  //     global._$app = nuxt
+  //     // console.log(global._$app)
+  //   }
+  //   if (process.browser) {
+  //     window._$app = nuxt
+  //     global._$app = nuxt
+  //     // @ts-ignore
+  //     // window.global = {
+  //     //   _$app: app
+  //     // }
+  //     // console.log(window._$app)
+  //   }
+  // })
 }

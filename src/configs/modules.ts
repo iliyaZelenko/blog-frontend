@@ -6,7 +6,7 @@ const { CONFIGS_DIR } = global.appEnv
 const i18n = require(`${join(CONFIGS_DIR, 'i18n.ts')}`)
 
 export default [
-  // '~/modules/myModule.ts',
+  '~/modules/myModule.ts',
   '~/modules/typescript',
   '@nuxtjs/apollo',
   '@nuxtjs/style-resources',

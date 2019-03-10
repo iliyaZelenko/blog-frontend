@@ -22,6 +22,7 @@ export const GET_CATEGORY_QUERY = gql`
       children {
         id
         name
+        description
         path
         postsCount
         allPostsCount

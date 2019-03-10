@@ -1,3 +1,3 @@
-export interface State {
-  isDark: boolean
+export interface StateInterface {
+  isDark: boolean | null
 }

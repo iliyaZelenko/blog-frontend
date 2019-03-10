@@ -45,12 +45,12 @@
               />
 
               <v-text-field
-                v-model="form.name"
-                v-validate="$formValidator.rules.name"
-                :error-messages="errors.collect('name')"
+                v-model="form.nickname"
+                v-validate="$formValidator.rules.nickname"
+                :error-messages="errors.collect('nickname')"
                 type="text"
-                label="Имя"
-                data-vv-name="name"
+                label="Ник"
+                data-vv-name="nickname"
                 prepend-inner-icon="person"
                 required
                 box
@@ -88,7 +88,7 @@
           </v-card-actions>
 
           <div class="text-xs-center pb-3">
-            <router-link :to="localePath({ name: 'auth-signin' })">
+            <router-link :to="pathGenerator.generate({ name: 'auth-signin' })">
               Already have an account?
             </router-link>
           </div>
@@ -98,43 +98,54 @@
   </div>
 </template>
 
-<script>
-import { mapActions } from 'vuex'
+<script lang="ts">
+import Vue from 'vue'
+import Component from '~/plugins/nuxt-class-component'
+import { Inject } from 'vue-inversify-decorator'
+import { TYPES } from '~/configs/dependencyInjection/types'
+import { PathGeneratorInterface } from '~/configs/dependencyInjection/interfaces'
+import {
+  namespace
+} from 'nuxt-class-component'
 
-export default {
-  name: 'Signup',
-  middleware: 'guest',
-  meta: {
-    guest: true
-  },
-  data: () => ({
-    form: {
-      name: 'Vasya Pupkin',
-      email: 'vasya@test.com',
-      password: 'password'
-    },
-    loading: false,
-    showPassword: true
-  }),
-  methods: {
-    async submit () {
-      if (await this.$formValidator.validate(this.form)) {
-        this.loading = true
-        try {
-          await this.signup(this.form)
-        } finally {
-          this.loading = false
-        }
-      }
-    },
-    ...mapActions('auth', ['signup'])
-  },
+const authModule = namespace('auth')
+
+@Component({
   head () {
     return {
       title: 'Sign Up Page',
       meta: [
         { content: 'Sign Up Page Description', name: 'description', hid: 'description' }
       ]
+    }
+  },
+  middleware: 'guest',
+  meta: {
+    guest: true
+  }
+})
+export default class Signup extends Vue {
+  // @ts-ignore
+  @Inject(TYPES.PathGeneratorInterface) private pathGenerator!: PathGeneratorInterface
+
+  @authModule.Action signup
+
+  form = {
+    nickname: 'VasyaPupkin',
+    email: 'test@test.com',
+    password: 'password'
+  }
+  loading: boolean = false
+  showPassword: boolean = true
+
+  async submit () {
+    if (await this.$formValidator.validate(this.form)) {
+      this.loading = true
+      try {
+        await this.signup(this.form)
+      } finally {
+        this.loading = false
+      }
     }
   }
 }
