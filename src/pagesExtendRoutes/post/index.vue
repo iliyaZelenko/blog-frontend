@@ -1,8 +1,12 @@
 <template>
   <div class="w-100 h-100">
-    <h1 class="mt-5 mb-3 display-3 font-weight-light">
+    <h1 class="mt-5 display-3 font-weight-light">
       {{ post.title }}
     </h1>
+
+    <breadcrumbs
+      :items="breadcrumbs"
+    />
 
     <v-layout
       align-center
@@ -150,6 +154,7 @@ import { serviceContainer } from '~/configs/dependencyInjection/container'
 import Tags from '~/components/posts/post/tags/Tags.vue'
 import Rating from '~/components/rating/Rating.vue'
 import User from '~/components/user/User.vue'
+import Breadcrumbs from '~/components/Breadcrumbs'
 import PostCommentCreationForm from '~/components/posts/post/comments/PostCommentCreationForm.vue'
 import { CommentInterface } from '~/apollo/schema/comments'
 
@@ -158,7 +163,7 @@ const PostRepo = serviceContainer.get<PostRepositoryInterface>(TYPES.PostReposit
 
 @Component({
   name: 'PostPage',
-  components: { PostCommentCreationForm, User, Tags, Rating },
+  components: { PostCommentCreationForm, User, Tags, Rating, Breadcrumbs },
   scrollToTop: true,
   head () {
     return {
@@ -199,7 +204,6 @@ export default class extends Vue {
 
     return {
       post
-      // rootCommentsPerPage
     }
   }
 
@@ -221,6 +225,54 @@ export default class extends Vue {
     }, 0)
   }
 
+  get breadcrumbs () {
+    const result: any[] = [...this.breadcrumbsItemsStart]
+
+    result.push(
+      ...this.post.category.ancestorsAndSelfInfo.map(i => ({
+        ...i,
+        onClick: this.onSelectCategory
+      })),
+      {
+        name: 'Текущий пост'
+      }
+    )
+
+    return result.map((item, i) => ({
+      ...item,
+      index: i
+    }))
+  }
+
+  get breadcrumbsItemsStart () {
+    return [
+      {
+        name: 'Главная',
+        onClick: () => {
+          this.$nuxt.$loading.start()
+          this.$router.push(
+            this.pathGenerator.generate('index'),
+            () => {
+              this.$nuxt.$loading.finish()
+            }
+          )
+        }
+      },
+      {
+        name: 'Категории',
+        onClick: () => {
+          this.$nuxt.$loading.start()
+          this.$router.push(
+            this.pathGenerator.generate('categories'),
+            () => {
+              this.$nuxt.$loading.finish()
+            }
+          )
+        }
+      }
+    ]
+  }
+
   onUserClick () {
     this.$router.push(
       this.pathGenerator.generate({
@@ -230,6 +282,16 @@ export default class extends Vue {
         }
       })
     )
+  }
+
+  async onSelectCategory (category) {
+    const path = this.getCategoryPath(category)
+
+    this.$nuxt.$loading.start()
+
+    this.$router.push(path, () => {
+      this.$nuxt.$loading.finish()
+    })
   }
 
   async onCommentCreated () {

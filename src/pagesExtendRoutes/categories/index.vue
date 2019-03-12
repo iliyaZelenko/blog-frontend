@@ -1,16 +1,48 @@
 <template>
   <div class="w-100 h-100">
-    <h1 class="display-1">
-      {{ selectedCategory ? selectedCategory.name : 'Выбор категории' }}
-    </h1>
+    <v-layout
+      :wrap="$breakpoint.is('smAndDown')"
+    >
+      <v-flex shrink>
+        <h1 class="display-1 mb-3">
+          {{ selectedCategory ? selectedCategory.name : 'Выбор категории' }}
+        </h1>
 
-    <p v-if="selectedCategory">
-      {{ selectedCategory.description }}
-    </p>
+        <p v-if="selectedCategory">
+          {{ selectedCategory.description }}
+          Мультипарадигменный язык программирования. Поддерживает объектно-ориентированный, императивный и функциональный стили. Является реализацией языка ECMAScript. Мультипарадигменный язык программирования. Мультипарадигменный язык программирования. Поддерживает объектно-ориентированный, императивный и функциональный стили. Является реализацией языка ECMAScript. Мультипарадигменный язык программирования. Поддерживает объектно-ориентированный, императивный и функциональный стили. Является реализацией языка ECMAScript. объектно-ориентированный, императивный и функциональный стили. Является реализацией языка ECMAScript.
+        </p>
+      </v-flex>
 
-    <categories-breadcrumbs
+      <v-spacer />
+
+      <v-flex
+        :shrink="!$breakpoint.is('smAndDown')"
+        class="text-xs-center"
+      >
+        <v-btn
+          color="green"
+          dark
+          large
+        >
+          <v-icon left>
+            create
+          </v-icon>
+          Создать пост
+        </v-btn>
+        <br>
+        <v-btn
+        >
+          <v-icon left>
+            notifications
+          </v-icon>
+          Подписаться на обновления
+        </v-btn>
+      </v-flex>
+    </v-layout>
+
+    <breadcrumbs
       :items="breadcrumbs"
-      @select="onSelectCategory"
     />
 
     <categories-toolbar
@@ -66,7 +98,7 @@ import { Inject } from 'vue-inversify-decorator'
 import { Prop } from 'vue-property-decorator'
 import Component from '~/plugins/nuxt-class-component'
 import CategoriesList from '~/components/categories/CategoriesList'
-import CategoriesBreadcrumbs from '~/components/categories/CategoriesBreadcrumbs'
+import Breadcrumbs from '~/components/Breadcrumbs'
 import CategoriesToolbar from '~/components/categories/CategoriesToolbar'
 import PostsList from '~/components/posts/PostsList'
 import { CategoryInterface } from '~/apollo/schema/categories'
@@ -83,7 +115,7 @@ const PathGenerator = serviceContainer.get<PathGeneratorInterface>(TYPES.PathGen
 
 @Component({
   components: {
-    CategoriesList, CategoriesBreadcrumbs, CategoriesToolbar, PostsList
+    CategoriesList, Breadcrumbs, CategoriesToolbar, PostsList
   }
 })
 export default class Categories extends Vue {
@@ -140,34 +172,37 @@ export default class Categories extends Vue {
   loadingCategory: CategoryInterface | null = null
   loadingPosts: boolean = false
   categories: CategoryInterface[] = []
-  breadcrumbsItemsStart = [
-    {
-      name: 'Главная',
-      onClick () {
-        // this.loading = true
 
-        this.$router.push(
-          this.pathGenerator.generate('index')
-          // () => { this.loading = false }
-        )
-      }
-    },
-    {
-      name: 'Категории',
-      onClick () {
-        location.href = this.pathGenerator.generate('categories')
+  get breadcrumbsItemsStart () {
+    return [
+      {
+        name: 'Главная',
+        onClick: () => {
+          // this.loading = true
 
-        // this.$router.push не правильн оменяет страинцу, даже если обнулять состояние
-        // this.$router.push(
-        //   this.pathGenerator.generate('categories'),
-        //   () => {
-        //     this.selectedCategory = null
-        //     getRootCategories.apply(this)
-        //   }
-        // )
+          this.$router.push(
+            this.pathGenerator.generate('index')
+            // () => { this.loading = false }
+          )
+        }
+      },
+      {
+        name: 'Категории',
+        onClick: () => {
+          location.href = this.pathGenerator.generate('categories')
+
+          // this.$router.push не правильн оменяет страинцу, даже если обнулять состояние
+          // this.$router.push(
+          //   this.pathGenerator.generate('categories'),
+          //   () => {
+          //     this.selectedCategory = null
+          //     getRootCategories.apply(this)
+          //   }
+          // )
+        }
       }
-    }
-  ]
+    ]
+  }
 
   get selectedCategoryHasPosts (): boolean {
     return !!this.selectedCategory && !!this.selectedCategory.posts.paginatorInfo.total
@@ -200,7 +235,10 @@ export default class Categories extends Vue {
     if (this.selectedCategory) {
       // console.log('selectedCategory', this.selectedCategory)
       result.push(
-        ...this.selectedCategory.ancestorsAndSelfInfo
+        ...this.selectedCategory.ancestorsAndSelfInfo.map(i => ({
+          ...i,
+          onClick: this.onSelectCategory
+        }))
       )
     }
 
@@ -233,17 +271,13 @@ export default class Categories extends Vue {
   }
 
   async onSelectCategory (category) {
-    if (category.onClick) {
-      category.onClick.apply(this)
-    } else {
-      const path = getCategoryPath(category)
+    const path = getCategoryPath(category)
 
-      this.loadingCategory = category
+    this.loadingCategory = category
 
-      this.$router.push(path, () => {
-        this.loadingCategory = null
-      })
-    }
+    this.$router.push(path, () => {
+      this.loadingCategory = null
+    })
   }
 }
 

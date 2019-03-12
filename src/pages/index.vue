@@ -2,8 +2,9 @@
   <div class="w-100 h-100">
     <v-layout>
       <v-flex
-        xs6
-        offset-xs6
+        xs12
+        sm6
+        offset-sm6
       >
         <tags-cloud :tags="tags" />
       </v-flex>

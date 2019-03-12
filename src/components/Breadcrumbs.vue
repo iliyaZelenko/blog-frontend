@@ -16,7 +16,7 @@
       </span>
       <a
         v-else
-        @click="$emit('select', item)"
+        @click="item.onClick(item)"
       >
         {{ item.name }}
       </a>
@@ -36,7 +36,7 @@ import Component from '~/plugins/nuxt-class-component'
     }
   }
 })
-export default class CategoriesBreadcrumbs extends Vue {
+export default class Breadcrumbs extends Vue {
   //
 }
 </script>

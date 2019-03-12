@@ -4,9 +4,11 @@
       v-for="tag of tagsTruncated"
       :key="'tag-' + tag.id"
     >
+      <!--
       <v-avatar class="teal white--text">
         {{ tag.name.slice(0, 1).toUpperCase() }}
       </v-avatar>
+      -->
 
       <span class="body-1">
         {{ tag.name }}

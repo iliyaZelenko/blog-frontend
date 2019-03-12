@@ -43,6 +43,11 @@ export const GET_POST_QUERY = ({ repliesPreviewCount }) => {
           id
           name
           path
+          ancestorsAndSelfInfo {
+            id
+            name
+            path
+          }
         }
         tags {
           id
