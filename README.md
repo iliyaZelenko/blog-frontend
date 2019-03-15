@@ -7,6 +7,10 @@
 - [Пост](./docs/posts/index.md)
 - [i18n](./docs/i18n/index.md)
 
+# backend
+
+https://github.com/iliyaZelenko/blog-backend
+
 # frontend
 
 На фронтенде используется SSR, точнее Universal/Isomorphic подход, 
