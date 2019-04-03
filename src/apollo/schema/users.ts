@@ -17,24 +17,21 @@ export interface UserInterface {
   comments: CommentsInterface
 }
 
-export const AVATAR_SM = 'sm'
-export const AVATAR_MD = 'md'
-export const AVATAR_LG = 'lg'
-export const AVATAR_CIRCLE = 'circle'
-
-type AVATAR_SM = 'sm'
-type AVATAR_MD = 'md'
-type AVATAR_LG = 'lg'
-type AVATAR_CIRCLE = 'circle'
-
-export interface AvatarInterface {
-  [AVATAR_SM]: string
-  [AVATAR_MD]: string
-  [AVATAR_LG]: string
-  [AVATAR_CIRCLE]: string
+export enum Avatars {
+  AVATAR_SM = 'sm',
+  AVATAR_MD = 'md',
+  AVATAR_LG = 'lg',
+  AVATAR_CIRCLE = 'circle'
 }
 
-export type AvatarSizeTypes = AVATAR_LG | AVATAR_MD | AVATAR_SM | AVATAR_CIRCLE
+export interface AvatarInterface {
+  [Avatars.AVATAR_SM]: string
+  [Avatars.AVATAR_MD]: string
+  [Avatars.AVATAR_LG]: string
+  [Avatars.AVATAR_CIRCLE]: string
+}
+
+export type AvatarSizeTypes = Avatars.AVATAR_LG | Avatars.AVATAR_MD | Avatars.AVATAR_SM | Avatars.AVATAR_CIRCLE
 
 export const GENDER_MALE = 'MALE'
 export const GENDER_FEMALE = 'FEMALE'

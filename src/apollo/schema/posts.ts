@@ -32,3 +32,11 @@ export interface PostInterface {
   tags: TagInterface[]
   comments: CommentsInterface
 }
+
+export interface PostCreationInputInterface {
+  categoryId: number
+  userId: number
+  title: string
+  contentShort: string
+  content: string
+}

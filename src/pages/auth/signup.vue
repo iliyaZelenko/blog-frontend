@@ -139,7 +139,8 @@ export default class Signup extends Vue {
   showPassword: boolean = true
 
   async submit () {
-    if (await this.$formValidator.validate(this.form)) {
+    // this.form
+    if (await this.$validator.validate()) {
       this.loading = true
       try {
         await this.signup(this.form)

@@ -4,6 +4,7 @@ export const GET_AUTH_USER_PROFILE_QUERY = gql`
   query GetAuthUserProfileQuery {
     me {
       id
+      email
       nickname
       fullName
       avatar {

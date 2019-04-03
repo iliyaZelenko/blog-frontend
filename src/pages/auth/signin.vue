@@ -141,13 +141,14 @@ export default class Signin extends Vue {
 
   form = {
     email: 'test@test.com',
-    password: 'password'
+    password: 'secret'
   }
   loading: boolean = false
   showPassword: boolean = true
 
   async submit () {
-    if (await this.$formValidator.validate(this.form)) {
+    // TODO this.form
+    if (await this.$validator.validate()) {
       this.loading = true
       try {
         await this.signin(this.form)

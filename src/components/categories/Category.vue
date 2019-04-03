@@ -42,11 +42,11 @@
 
           <v-btn
             :loading="exploreLoading"
-            color="purple"
+            color="orange"
             flat
             @click="$emit('select', category); exploreLoading = true"
           >
-            Explore
+            Выбрать
           </v-btn>
 
           <v-spacer />

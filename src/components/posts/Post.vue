@@ -9,7 +9,10 @@
       />
 
       <v-card-title primary-title>
-        <h3 class="headline mb-0">
+        <h3
+          style="width: 100%;"
+          class="headline mb-0"
+        >
           {{ post.title }}
         </h3>
 

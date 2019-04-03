@@ -14,9 +14,8 @@ export interface State extends ModulesStates {
   // [AuthModule.NAME]: any
 }
 
-export const state = (): State => ({ // было State
+export const state = (): State => ({
   meta: {},
-  // TODO зачем там вообще функция? Хотя возможно лучше оставить, чтобы легче было переносить на Nuxt 3
   [BackendRoutesModule.NAME]: BackendRoutesModule.state(),
   [AuthModule.NAME]: AuthModule.state(),
   [UIModule.NAME]: UIModule.state()

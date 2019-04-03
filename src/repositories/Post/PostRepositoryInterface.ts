@@ -1,4 +1,4 @@
-import { PostInterface, PostsInterface } from '~/apollo/schema/posts'
+import { PostCreationInputInterface, PostInterface, PostsInterface } from '~/apollo/schema/posts'
 
 export default interface PostRepositoryInterface {
   getCategoryPosts (categoryId: number, page: number | undefined): Promise<PostsInterface>
@@ -8,4 +8,7 @@ export default interface PostRepositoryInterface {
     commentsPerPage?: number,
     repliesPreviewCount?: number
   ): Promise<PostInterface | null>
+  createPost (
+    input: PostCreationInputInterface
+  ): Promise<PostInterface>
 }

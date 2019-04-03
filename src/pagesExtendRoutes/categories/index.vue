@@ -10,13 +10,21 @@
 
         <p v-if="selectedCategory">
           {{ selectedCategory.description }}
-          Мультипарадигменный язык программирования. Поддерживает объектно-ориентированный, императивный и функциональный стили. Является реализацией языка ECMAScript. Мультипарадигменный язык программирования. Мультипарадигменный язык программирования. Поддерживает объектно-ориентированный, императивный и функциональный стили. Является реализацией языка ECMAScript. Мультипарадигменный язык программирования. Поддерживает объектно-ориентированный, императивный и функциональный стили. Является реализацией языка ECMAScript. объектно-ориентированный, императивный и функциональный стили. Является реализацией языка ECMAScript.
+
+          <br>
+          <br>
+
+          Личных постов: {{ selectedCategory.postsCount }}.
+          Всего постов: {{ selectedCategory.allPostsCount }}.
+          Личных вложенных категорий: {{ selectedCategory.childrenCount }}.
+          Всего вложенных категорий: {{ selectedCategory.allChildrenCount }}.
         </p>
       </v-flex>
 
       <v-spacer />
 
       <v-flex
+        v-if="$auth.loggedIn && selectedCategory"
         :shrink="!$breakpoint.is('smAndDown')"
         class="text-xs-center"
       >
@@ -24,6 +32,7 @@
           color="green"
           dark
           large
+          @click="showCreatePostModal = true"
         >
           <v-icon left>
             create
@@ -31,8 +40,7 @@
           Создать пост
         </v-btn>
         <br>
-        <v-btn
-        >
+        <v-btn>
           <v-icon left>
             notifications
           </v-icon>
@@ -89,6 +97,12 @@
         Категория не содержит постов.
       </v-alert>
     </template>
+
+    <create-post-modal
+      v-if="selectedCategory"
+      v-model="showCreatePostModal"
+      :category="selectedCategory"
+    />
   </div>
 </template>
 
@@ -109,13 +123,14 @@ import {
   PostRepositoryInterface
 } from '~/configs/dependencyInjection/interfaces'
 import { serviceContainer } from '~/configs/dependencyInjection/container'
+import CreatePostModal from '~/components/posts/modals/CreatePostModal.vue'
 
 // это используется не только в классе, а в функции, потому что asyncData не имеет this
 const PathGenerator = serviceContainer.get<PathGeneratorInterface>(TYPES.PathGeneratorInterface)
 
 @Component({
   components: {
-    CategoriesList, Breadcrumbs, CategoriesToolbar, PostsList
+    CategoriesList, Breadcrumbs, CategoriesToolbar, PostsList, CreatePostModal
   }
 })
 export default class Categories extends Vue {
@@ -128,6 +143,8 @@ export default class Categories extends Vue {
   // @ts-ignore
   @Inject(TYPES.CategoryRepositoryInterface) private categoryRepo!: CategoryRepositoryInterface
   @Inject(TYPES.PostRepositoryInterface) private postRepo!: PostRepositoryInterface
+
+  showCreatePostModal: boolean = false
 
   // типо static (не имеет this)
   async asyncData ({ app, redirect, error, params: { path, id, page } }) {

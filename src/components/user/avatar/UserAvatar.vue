@@ -29,7 +29,7 @@
 import Vue from 'vue'
 import { Prop } from 'vue-property-decorator'
 import Component from '~/plugins/nuxt-class-component'
-import { AVATAR_SM, AvatarSizeTypes, UserInterface } from '~/apollo/schema/users'
+import { Avatars, AvatarSizeTypes, UserInterface } from '~/apollo/schema/users'
 import ElSizeVariantsType, { LG, MD, SM } from '~/components/user/avatar/ElSizeVariantsType'
 
 @Component({
@@ -39,7 +39,7 @@ export default class UserAvatar extends Vue {
   @Prop(String) elSize!: string
   @Prop({ default: MD }) elSizeVariant!: ElSizeVariantsType
   @Prop(Object) user!: UserInterface
-  @Prop({ default: AVATAR_SM }) sizeType!: AvatarSizeTypes
+  @Prop({ default: Avatars.AVATAR_SM }) sizeType!: AvatarSizeTypes
 
   guestAvatar = 'https://practice.privatbank.ua/Content/images/no-avatar.png'
 

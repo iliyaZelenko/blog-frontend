@@ -15,8 +15,9 @@
       :search-input.sync="searchLocal"
       :items="itemsSearch"
       :loading="loading"
+      type="search"
       class="mx-3"
-      label="Search by category"
+      label="Поиск в категории"
       item-text="name"
       prepend-inner-icon="search"
       return-object

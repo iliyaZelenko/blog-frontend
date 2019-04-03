@@ -10,7 +10,6 @@ export default {
     nickname: 'ник',
     // nicknameOrEmail: 'почта/ник',
     password: 'пароль',
-    'comment-message': 'сообщение',
 
     // passwordConfirm: 'повтор пароля',
     currentPassword: 'текущий пароль',
@@ -21,6 +20,15 @@ export default {
     phone: 'телефон',
     birthday: 'день рождения',
     emailLabel: 'метка',
-    phoneLabel: 'метка'
+    phoneLabel: 'метка',
+
+    /* Post */
+    postTitle: 'заголовок',
+    postTags: 'теги поста',
+    postContentShort: 'короткий контент',
+    postContent: 'контент',
+
+    /* Comment */
+    commentMessage: 'сообщение'
   }
 }

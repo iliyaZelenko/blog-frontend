@@ -6,9 +6,10 @@ import { MutationTree, ActionTree, GetterTree, ActionContext } from 'vuex'
 import { RootState } from '~/store'
 import { setTimeout, clearTimeout } from 'timers'
 import { serviceContainer } from '~/configs/dependencyInjection/container'
-import UserRepositoryInterface from '~/repositories/User/UserRepositoryInterface'
 import { TYPES } from '~/configs/dependencyInjection/types'
-import { ObservableInterface } from '~/configs/dependencyInjection/interfaces'
+import {
+  UserRepositoryInterface, ObservableInterface, PathGeneratorInterface
+} from '~/configs/dependencyInjection/interfaces'
 import LoggedInBeforeEvent from '~/events/LoggedInBeforeEvent'
 import SignInEvent from '~/events/SignInEvent'
 import LogoutEvent from '~/events/LogoutEvent'
@@ -23,6 +24,7 @@ const localStorageKeys = {
   tokenExpiresIn: 'auth__tokenExpiresIn',
   refreshTokenExpiresIn: 'auth__refreshTokenExpiresIn'
 }
+// TODO вынести в конфиг
 const tokenSecondBeforeExpired = 50 // seconds before token expired, uses for refresh token request
 // const moduleNamespace = 'auth/'
 let refreshTimeoutId: NodeJS.Timeout // = null
@@ -41,6 +43,7 @@ if (process.browser) {
 
 const UserRepo = serviceContainer.get<UserRepositoryInterface>(TYPES.UserRepositoryInterface)
 const Observable = serviceContainer.get<ObservableInterface>(TYPES.ObservableInterface)
+const PathGenerator = serviceContainer.get<PathGeneratorInterface>(TYPES.PathGeneratorInterface)
 
 // TODO указать точные типы
 export interface State {
@@ -107,7 +110,7 @@ export const actions: Actions<State, RootState> = {
       loggedInData.showMsg = false
       await dispatch('loggedIn', loggedInData)
 
-      global._$app.$notify.success('Registered successfully!')
+      global._$app.$notify.success('Регистрация прошла успешно!')
     } catch (e) {
       // Игнор ошибки. Axios interceptors сделают уведомление об ошибке.
     }
@@ -128,7 +131,7 @@ export const actions: Actions<State, RootState> = {
     commit(USER_LOGGED_IN, context)
 
     if (showMsg) {
-      global._$app.$notify.success('logged in successfully!')
+      global._$app.$notify.success('Вход выполнен успешно!')
     }
 
     return {
@@ -287,15 +290,15 @@ export const mutations: MutationTree<State> = {
     const { rootState } = payloadAsContext
     state.refreshTokenAlreadyExpired = false
 
-    console.log(rootState)
-
     if (rootState.meta.guest) {
-      this.$router.push(this.localePath({
-        name: 'profile-user',
-        params: {
-          user: state.user.id
-        }
-      }))
+      this.$router.push(
+        PathGenerator.generate({
+          name: 'profile-user',
+          params: {
+            user: state.user.id
+          }
+        })
+      )
     }
 
     setTimeoutTokenRefresh(payloadAsContext)
@@ -306,11 +309,15 @@ export const mutations: MutationTree<State> = {
 
     // If route requires auth or guest, then redirect
     if (rootState.meta.auth) {
-      this.$router.push({ name: 'auth-signin' })
+      this.$router.push(
+        PathGenerator.generate({ name: 'auth-signin' })
+      )
     }
     // TODO это точно нужно?
     if (rootState.meta.guest) {
-      this.$router.push('/')
+      this.$router.push(
+        PathGenerator.generate({ name: 'index' })
+      )
     }
   }
 }
@@ -375,7 +382,7 @@ function stopTokenRefresh () {
 }
 
 function showRefreshTokenExpiredMessage () {
-  global._$app.$notify.info('Please, log in again')
+  global._$app.$notify.info('Пожалуйста, войдите снова')
 }
 
 function getUnixTimestamp () {

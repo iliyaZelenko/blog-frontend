@@ -3,12 +3,12 @@
     <v-textarea
       v-if="true"
       :ref="uniqueRef"
-      v-validate="'required|' + $formValidator.rules['comment-message']"
-      :error-messages="errors.collect('comment-message')"
+      v-validate="'required|' + $formValidator.rules.commentMessage"
+      :error-messages="errors.collect('commentMessage')"
       :value="value"
       :loading="loading"
+      data-vv-name="commentMessage"
       class="mt-3"
-      data-vv-name="comment-message"
       placeholder="Оставить кооментарий"
       append-outer-icon="send"
       rows="1"
@@ -18,23 +18,6 @@
       @click:append-outer="createComment"
       @input="$emit('input', arguments[0])"
     />
-
-    <!--snackbarIsSuccess ? 'success' : 'error'-->
-    <v-snackbar
-      v-model="snackbar"
-      :color="['error', 'success'][+snackbarIsSuccess]"
-      top
-    >
-      {{ snackbarText }}
-
-      <v-btn
-        color="white"
-        flat
-        @click="snackbar = false"
-      >
-        Закрыть
-      </v-btn>
-    </v-snackbar>
   </div>
 </template>
 
@@ -59,9 +42,6 @@ export default class extends Vue {
   @Inject(TYPES.CommentRepositoryInterface) private commentRepo!: CommentRepositoryInterface
 
   public loading: boolean = false
-  public snackbar: boolean = false
-  public snackbarIsSuccess: boolean | null = null
-  public snackbarText: string | null = null
 
   get uniqueRef () {
     return 'postCommentCreationFormTextarea' + Date.now()
@@ -73,6 +53,8 @@ export default class extends Vue {
   }
 
   async createComment () {
+    if (!await this.$validator.validate()) return
+
     const input = {
       postId: this.post.id,
       userId: this.$auth.user.id,
@@ -82,18 +64,14 @@ export default class extends Vue {
 
     this.loading = true
 
+    // TODO this.$notify.
     try {
       await this.commentRepo.createComment(input)
 
-      this.snackbar = true
-      this.snackbarText = 'Созданно успешно!'
-      this.snackbarIsSuccess = true
-
+      this.$notify.success('Созданно успешно!')
       this.$emit('comment-created')
     } catch (e) {
-      this.snackbar = true
-      this.snackbarText = 'Произошла ошибка!'
-      this.snackbarIsSuccess = false
+      this.$notify.error('Произошла ошибка!')
     }
 
     this.loading = false

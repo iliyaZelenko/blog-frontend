@@ -114,6 +114,7 @@ export default class MainLayout extends Vue {
     this.navigationDrawer = !this.navigationDrawer
   }
 
+  // TODO вынести в отдельный компонент
   showMessagesFromServer () {
     const messages = this.$cookies.get('showMessagesInBrowser')
 

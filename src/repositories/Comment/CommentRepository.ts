@@ -119,6 +119,7 @@ export default class CommentRepository extends BaseRepository implements Comment
     return comments
   }
 
+  // TODO почему возвращает CommentsInterface а не CommentInterface?
   public async createComment (
     input: CommentCreationInputInterface
   ): Promise<CommentsInterface> {

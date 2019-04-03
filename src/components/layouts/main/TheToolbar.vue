@@ -206,6 +206,8 @@ const authEmailVerificationModule = namespace('auth/emailVerification')
     TheToolbarUserMenu,
     LocaleSwitcher
   }
+  // give me my own validator scope.
+  // $_veeValidate: { validator: 'new' }
   // data: () => ({
   //   hello: '222'
   // })

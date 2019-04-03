@@ -108,7 +108,7 @@ import { Prop } from 'vue-property-decorator'
 import { Inject } from 'vue-inversify-decorator'
 import { TYPES } from '~/configs/dependencyInjection/types'
 import Component from '~/plugins/nuxt-class-component'
-import { AVATAR_MD, GENDER_INFO, UserInterface } from '~/apollo/schema/users'
+import { Avatars, GENDER_INFO, UserInterface } from '~/apollo/schema/users'
 import UserAvatar from '~/components/user/avatar/UserAvatar.vue'
 import { PathGeneratorInterface } from '~/configs/dependencyInjection/interfaces'
 import { LG } from '~/components/user/avatar/ElSizeVariantsType'
@@ -129,7 +129,7 @@ export default class UserMenu extends Vue {
   public subscribeModel: boolean = false
   public favoriteModel: boolean = false
   public userAvatarSizeVariant: string = LG
-  public userAvatarSizeType: string = AVATAR_MD
+  public userAvatarSizeType: string = Avatars.AVATAR_MD
 
   public menuModel: boolean = false
 
