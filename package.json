@@ -22,7 +22,7 @@
   "dependencies": {
     "@nuxtjs/apollo": "^4.0.0-rc2.3",
     "@nuxtjs/style-resources": "^0.1.1",
-    "axios": "^0.18.0",
+    "axios": "^0.18.1",
     "babel-polyfill": "^6.26.0",
     "cookie-universal-nuxt": "^2.0.11",
     "d3": "3.5",
