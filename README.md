@@ -1,7 +1,5 @@
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
-Ставьте зведы, добавлю полное описание как поставить локально фронтенд + бекенд.
-
 ## Документация:
 
 - [Категории](./docs/categories/index.md)
