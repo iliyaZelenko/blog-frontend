@@ -1,5 +1,8 @@
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
+![image](https://github.com/user-attachments/assets/647238fa-789b-4a8e-9601-86f57a183ab0)
+
+
 ## Документация:
 
 - [Категории](./docs/categories/index.md)
